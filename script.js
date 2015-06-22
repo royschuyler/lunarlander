@@ -1,7 +1,7 @@
 var GameState = function(game) {
 };
 
-// Load images and sounds
+// Load images
 GameState.prototype.preload = function() {
     this.game.load.spritesheet('ship', '/assets/gfx/ship.png', 32, 32);
     this.game.load.image('ground', '/assets/gfx/ground.png');
@@ -11,14 +11,14 @@ GameState.prototype.preload = function() {
 // Setup the example
 GameState.prototype.create = function() {
     // Set stage background color
-    this.game.stage.backgroundColor = 0x333333;
+    this.game.stage.backgroundColor = 0x777777;
 
     // Define motion constants
     this.ROTATION_SPEED = 180; // degrees/second
     this.ACCELERATION = 200; // pixels/second/second
     this.MAX_SPEED = 250; // pixels/second
     this.DRAG = 0; // pixels/second
-    this.GRAVITY = 50; // pixels/second/second
+    this.GRAVITY = 75; // pixels/second/second
 
     // Add the ship to the stage
     this.ship = this.game.add.sprite(0, 0, 'ship');
@@ -35,7 +35,7 @@ GameState.prototype.create = function() {
     this.ship.body.drag.setTo(this.DRAG, this.DRAG); // x, y
 
     // Choose a random starting angle and velocity for the ship
-    this.resetShip();
+    // this.resetShip();
 
     // Turn on gravity
     game.physics.arcade.gravity.y = this.GRAVITY;
@@ -48,6 +48,19 @@ GameState.prototype.create = function() {
     for(var x = 0; x < this.game.width; x += 32) {
         // Add the ground blocks, enable physics on each, make them immovable
         var groundBlock = this.game.add.sprite(x, this.game.height - 32, 'ground');
+        this.game.physics.enable(groundBlock, Phaser.Physics.ARCADE);
+        groundBlock.body.immovable = true;
+        groundBlock.body.allowGravity = false;
+        this.ground.add(groundBlock);
+    }
+
+
+    // trying to make a landing sprite
+    this.ground = this.game.add.group();
+    var landerWidth = this.game.width/2;
+    for(var x = 0; x < landerWidth; x += 32) {
+        // Add the ground blocks, enable physics on each, make them immovable
+        var groundBlock = this.game.add.sprite(x, this.game.height - 125, 'ground');
         this.game.physics.enable(groundBlock, Phaser.Physics.ARCADE);
         groundBlock.body.immovable = true;
         groundBlock.body.allowGravity = false;
@@ -116,8 +129,10 @@ GameState.prototype.resetShip = function() {
     this.ship.body.acceleration.setTo(0, 0);
 
     // Select a random starting angle and velocity
-    this.ship.angle = this.game.rnd.integerInRange(-180, 180);
-    this.ship.body.velocity.setTo(this.game.rnd.integerInRange(100, 200), 0);
+    // this.ship.angle = this.game.rnd.integerInRange(-180, 180);
+    // this.ship.body.velocity.setTo(this.game.rnd.integerInRange(100, 200), 0);
+    this.ship.angle = 270;
+    this.ship.body.velocity.setTo(0)
 };
 
 // The update() method is called every frame
@@ -158,6 +173,7 @@ GameState.prototype.update = function() {
         }
 
     }
+
 
     if (this.upInputIsActive()) {
         // If the UP key is down, thrust
