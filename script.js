@@ -8,6 +8,8 @@ GameState.prototype.preload = function() {
     this.game.load.spritesheet('explosion', '/assets/gfx/explosion.png', 128, 128);
 };
 
+
+
 // Setup the example
 GameState.prototype.create = function() {
     // Set stage background color
@@ -56,15 +58,15 @@ GameState.prototype.create = function() {
 
 
     // trying to make a landing sprite
-    this.ground = this.game.add.group();
-    var landerWidth = this.game.width/2;
-    for(var x = 0; x < landerWidth; x += 32) {
+    this.land = this.game.add.group();
+
+    for(var x = 0; x < this.game.width/3; x += 32) {
         // Add the ground blocks, enable physics on each, make them immovable
-        var groundBlock = this.game.add.sprite(x, this.game.height - 125, 'ground');
-        this.game.physics.enable(groundBlock, Phaser.Physics.ARCADE);
-        groundBlock.body.immovable = true;
-        groundBlock.body.allowGravity = false;
-        this.ground.add(groundBlock);
+        var landingBlock = this.game.add.sprite(x, this.game.height - 125, 'ground');
+        this.game.physics.enable(landingBlock, Phaser.Physics.ARCADE);
+        landingBlock.body.immovable = true;
+        landingBlock.body.allowGravity = false;
+        this.ground.add(landingBlock);
     }
 
     // Create a group for explosions
